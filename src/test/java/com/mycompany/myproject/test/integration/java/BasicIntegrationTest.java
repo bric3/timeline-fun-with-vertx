@@ -1,4 +1,5 @@
-package com.mycompany.myproject.test.integration.java;/*
+package com.mycompany.myproject.test.integration.java;
+/*
  * Copyright 2013 Red Hat, Inc.
  *
  * Red Hat licenses this file to you under the Apache License, version 2.0
@@ -16,6 +17,10 @@ package com.mycompany.myproject.test.integration.java;/*
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
 
+import static org.vertx.testtools.VertxAssert.assertEquals;
+import static org.vertx.testtools.VertxAssert.assertNotNull;
+import static org.vertx.testtools.VertxAssert.assertTrue;
+import static org.vertx.testtools.VertxAssert.testComplete;
 import org.junit.Test;
 import org.vertx.java.core.AsyncResult;
 import org.vertx.java.core.AsyncResultHandler;
@@ -24,8 +29,6 @@ import org.vertx.java.core.http.HttpClientResponse;
 import org.vertx.java.core.http.HttpServer;
 import org.vertx.java.core.http.HttpServerRequest;
 import org.vertx.testtools.TestVerticle;
-
-import static org.vertx.testtools.VertxAssert.*;
 
 /**
  * Simple integration test which shows tests deploying other verticles, using the Vert.x API etc
