@@ -1,0 +1,77 @@
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>SMS</title>
+    <script src="http://code.jquery.com/jquery-2.0.3.min.js" type="text/javascript"></script>
+</head>
+
+<body>
+<div class="dvStory">
+    <div id="socketmessage"></div>
+    <div id="timeline">
+
+    </div>
+        <label for="message">Message : </label>
+        <input id="message" type="text" name="message"/>
+        <input type="button" id="submitMessage" value="submit message"/>
+    </div>
+<script type="text/javascript">
+    var fm = $("#messageForm");
+    var messageInput = $("#message");
+
+    function openWebSocket(wsUrl) {
+        var s= new WebSocket(wsUrl);
+        displaySocketMessage("socket opened on " + wsUrl)
+        s.onopen = function () {
+            //s.send ("ok I am warmed up");
+        };
+        s.onmessage = function(event) {
+            displaySocketMessage("Received data from websocket: " + event.data);
+        };
+        s.onclose = function(event) {
+            displaySocketMessage("Socket was closed");
+        };
+        return s;
+    }
+
+    function sendMessage(message) {
+        if(socket.readyState = WebSocket.OPEN) {
+            socket.send(message);
+            displaySocketMessage("Sent message : " + message);
+            displayNewParagraph(message);
+        } else {
+            displaySocketErrorMessage("Socket not open")
+        }
+    }
+
+
+    function displaySocketMessage(socketMessage) {
+        $('#socketmessage').html('<span id="socketmessage" style="background-color: greenyellow; color: beige">' + socketMessage + '</span>');
+    }
+
+    function displaySocketErrorMessage(socketMessage) {
+        $('#socketmessage').html('<span id="socketmessage" style="background-color: lightcoral; color: beige">' + socketMessage + '</span>');
+    }
+
+    function displayNewParagraph(paragraphText) {
+        $('#timeline').append('<p>' + paragraphText + '</p>');
+    }
+
+    var socket = openWebSocket("ws://localhost:1234/ws");
+
+
+    $('#submitMessage').click (function () {
+        sendMessage(messageInput.val());
+        return false;
+    });
+
+
+    socket.onmessage = function(event) {
+        displaySocketMessage("Received data from websocket: " + event.data);
+        displayNewParagraph(event.data);
+    };
+
+
+</script>
+
+</body>
+</html>
