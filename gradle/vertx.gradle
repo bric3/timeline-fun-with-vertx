@@ -17,7 +17,7 @@ import org.vertx.java.platform.impl.cli.Starter
  */
 
 apply plugin: 'java'
-apply plugin: 'groovy'
+//apply plugin: 'groovy'
 apply plugin: 'idea'
 apply plugin: 'eclipse'
 
@@ -144,8 +144,12 @@ test {
 }
 
 task runModIDEA(dependsOn: copyMod, description: 'Run the module from the resources in IntelliJ') << {
-  runModWithClasspath("src/main/resources/${cpSeparator}src/test/resources/${cpSeparator}" +
-                      "out/production/${project.name}/${cpSeparator}out/test/${project.name}/");
+  runModWithClasspath(
+          "${rootDir}/src/main/resources/${cpSeparator}" +
+          "${rootDir}/src/test/resources/${cpSeparator}" +
+          "${rootDir}/out/production/${project.name}/${cpSeparator}" +
+          "${rootDir}/out/test/${project.name}/"
+  );
 }
 
 task runModEclipse(dependsOn: copyMod, description: 'Run the module from the resources in Eclipse') << {
@@ -153,6 +157,7 @@ task runModEclipse(dependsOn: copyMod, description: 'Run the module from the res
 }
 
 def runModWithClasspath(String classpath) {
+  println "classpath: " + classpath
   setSysProps()
   def args = ['runmod', moduleName]
   def args2 = runModArgs.split("\\s+")
@@ -169,6 +174,8 @@ def runModWithClasspath(String classpath) {
   }
   args.add('-cp')
   args.add(classpath)
+  args.add('-conf')
+  args.add(project.rootProject.file("conf.json"))
   Starter.main(args as String[])
 }
 
